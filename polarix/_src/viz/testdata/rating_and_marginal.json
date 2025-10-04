@@ -1,0 +1,293 @@
+{
+  "$schema": "<removed>",
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 300
+    }
+  },
+  "hconcat": [
+    {
+      "resolve": {
+        "scale": {
+          "x": "independent"
+        }
+      },
+      "title": {
+        "anchor": "middle",
+        "text": "P1 player"
+      },
+      "vconcat": [
+        {
+          "data": {
+            "values": [
+              {
+                "action_type": "rock",
+                "marginals": 0.25,
+                "p1": "rock1",
+                "ratings": 0.0
+              },
+              {
+                "action_type": "rock",
+                "marginals": 0.25,
+                "p1": "rock2",
+                "ratings": 1.0
+              },
+              {
+                "action_type": "paper",
+                "marginals": 0.25,
+                "p1": "paper",
+                "ratings": 2.0
+              },
+              {
+                "action_type": "scissors",
+                "marginals": 0.25,
+                "p1": "scissors",
+                "ratings": 3.0
+              }
+            ]
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "action_type",
+                "type": "nominal"
+              },
+              {
+                "field": "marginals",
+                "type": "quantitative"
+              },
+              {
+                "field": "p1",
+                "type": "nominal"
+              },
+              {
+                "field": "ratings",
+                "type": "quantitative"
+              }
+            ],
+            "x": {
+              "field": "ratings",
+              "title": "Equilibrium ratings",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "p1",
+              "sort": {
+                "field": "ratings",
+                "op": "min",
+                "order": "descending"
+              },
+              "type": "nominal"
+            }
+          },
+          "height": 40,
+          "mark": {
+            "color": "red",
+            "shape": "diamond",
+            "type": "point"
+          },
+          "width": 60
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "action_type": "rock",
+                "marginals": 0.25,
+                "p1": "rock1",
+                "ratings": 0.0
+              },
+              {
+                "action_type": "rock",
+                "marginals": 0.25,
+                "p1": "rock2",
+                "ratings": 1.0
+              },
+              {
+                "action_type": "paper",
+                "marginals": 0.25,
+                "p1": "paper",
+                "ratings": 2.0
+              },
+              {
+                "action_type": "scissors",
+                "marginals": 0.25,
+                "p1": "scissors",
+                "ratings": 3.0
+              }
+            ]
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "action_type",
+                "type": "nominal"
+              },
+              {
+                "field": "marginals",
+                "type": "quantitative"
+              },
+              {
+                "field": "p1",
+                "type": "nominal"
+              },
+              {
+                "field": "ratings",
+                "type": "quantitative"
+              }
+            ],
+            "x": {
+              "field": "marginals",
+              "title": "Marginal support",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "p1",
+              "sort": "-x",
+              "type": "nominal"
+            }
+          },
+          "height": 40,
+          "mark": {
+            "type": "bar"
+          },
+          "width": 60
+        }
+      ]
+    },
+    {
+      "resolve": {
+        "scale": {
+          "x": "independent"
+        }
+      },
+      "title": {
+        "anchor": "middle",
+        "text": "P2 player"
+      },
+      "vconcat": [
+        {
+          "data": {
+            "values": [
+              {
+                "marginals": 0.25,
+                "p2": "rock1",
+                "ratings": 0.0
+              },
+              {
+                "marginals": 0.25,
+                "p2": "rock2",
+                "ratings": 1.0
+              },
+              {
+                "marginals": 0.25,
+                "p2": "paper",
+                "ratings": 2.0
+              },
+              {
+                "marginals": 0.25,
+                "p2": "scissors",
+                "ratings": 3.0
+              }
+            ]
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "marginals",
+                "type": "quantitative"
+              },
+              {
+                "field": "p2",
+                "type": "nominal"
+              },
+              {
+                "field": "ratings",
+                "type": "quantitative"
+              }
+            ],
+            "x": {
+              "field": "ratings",
+              "title": "Equilibrium ratings",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "p2",
+              "sort": {
+                "field": "ratings",
+                "op": "min",
+                "order": "descending"
+              },
+              "type": "nominal"
+            }
+          },
+          "height": 40,
+          "mark": {
+            "color": "red",
+            "shape": "diamond",
+            "type": "point"
+          },
+          "width": 60
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "marginals": 0.25,
+                "p2": "rock1",
+                "ratings": 0.0
+              },
+              {
+                "marginals": 0.25,
+                "p2": "rock2",
+                "ratings": 1.0
+              },
+              {
+                "marginals": 0.25,
+                "p2": "paper",
+                "ratings": 2.0
+              },
+              {
+                "marginals": 0.25,
+                "p2": "scissors",
+                "ratings": 3.0
+              }
+            ]
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "marginals",
+                "type": "quantitative"
+              },
+              {
+                "field": "p2",
+                "type": "nominal"
+              },
+              {
+                "field": "ratings",
+                "type": "quantitative"
+              }
+            ],
+            "x": {
+              "field": "marginals",
+              "title": "Marginal support",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "p2",
+              "sort": "-x",
+              "type": "nominal"
+            }
+          },
+          "height": 40,
+          "mark": {
+            "type": "bar"
+          },
+          "width": 60
+        }
+      ]
+    }
+  ]
+}
