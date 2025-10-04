@@ -30,10 +30,16 @@ candidates and frontier tasks, making training more robust and efficient.
 
 ## Installation
 
-You can install `polarix` from source, with no stability guarantees.
+You can install `polarix` from PyPi:
 
 ```bash
-pip install git+git://github.com/google-deepmind/polarix.git`
+pip install -U polarix
+```
+
+or from source, with no stability guarantees.
+
+```bash
+pip install git+git://github.com/google-deepmind/polarix.git
 ```
 
 ## Quick Start
