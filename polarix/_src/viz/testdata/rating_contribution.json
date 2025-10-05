@@ -1,0 +1,622 @@
+{
+  "$schema": "<removed>",
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 300
+    }
+  },
+  "hconcat": [
+    {
+      "data": {
+        "values": [
+          {
+            "p1": "paper",
+            "rating": 0.25,
+            "support": 0.25
+          },
+          {
+            "p1": "rock1",
+            "rating": 0.0,
+            "support": 0.25
+          },
+          {
+            "p1": "rock2",
+            "rating": 0.0,
+            "support": 0.25
+          },
+          {
+            "p1": "scissors",
+            "rating": -0.25,
+            "support": 0.25
+          }
+        ]
+      },
+      "height": 80,
+      "layer": [
+        {
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "p1",
+                "type": "nominal"
+              },
+              {
+                "field": "rating",
+                "type": "quantitative"
+              },
+              {
+                "field": "support",
+                "type": "quantitative"
+              }
+            ],
+            "x": {
+              "aggregate": "sum",
+              "axis": {
+                "grid": true,
+                "orient": "top"
+              },
+              "field": "rating",
+              "title": "p1 ratings",
+              "type": "quantitative"
+            },
+            "y": {
+              "axis": {
+                "grid": true,
+                "labels": true
+              },
+              "field": "p1",
+              "sort": ["paper", "rock1", "rock2", "scissors"],
+              "title": null,
+              "type": "nominal"
+            }
+          },
+          "mark": {
+            "color": "red",
+            "filled": false,
+            "shape": "diamond",
+            "type": "point"
+          },
+          "name": "viewXXX"
+        },
+        {
+          "encoding": {
+            "x": {
+              "axis": {
+                "grid": true,
+                "orient": "bottom"
+              },
+              "field": "support",
+              "scale": {
+                "zero": false
+              },
+              "title": "p1 support",
+              "type": "quantitative"
+            },
+            "y": {
+              "axis": {
+                "grid": true,
+                "labels": true
+              },
+              "field": "p1",
+              "sort": ["paper", "rock1", "rock2", "scissors"],
+              "title": null,
+              "type": "nominal"
+            }
+          },
+          "mark": {
+            "strokeDash": [2, 2],
+            "type": "line"
+          }
+        }
+      ],
+      "resolve": {
+        "scale": {
+          "x": "independent",
+          "y": "shared"
+        }
+      },
+      "width": 100
+    },
+    {
+      "height": 80,
+      "layer": [
+        {
+          "data": {
+            "values": [
+              {
+                "contrib": 0.0625,
+                "p1": "paper",
+                "p2": "paper"
+              },
+              {
+                "contrib": 0.25,
+                "p1": "paper",
+                "p2": "rock1"
+              },
+              {
+                "contrib": 0.25,
+                "p1": "paper",
+                "p2": "rock2"
+              },
+              {
+                "contrib": -0.3125,
+                "p1": "paper",
+                "p2": "scissors"
+              },
+              {
+                "contrib": -0.1875,
+                "p1": "rock1",
+                "p2": "paper"
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock1",
+                "p2": "rock1"
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock1",
+                "p2": "rock2"
+              },
+              {
+                "contrib": 0.1875,
+                "p1": "rock1",
+                "p2": "scissors"
+              },
+              {
+                "contrib": -0.1875,
+                "p1": "rock2",
+                "p2": "paper"
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock2",
+                "p2": "rock1"
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock2",
+                "p2": "rock2"
+              },
+              {
+                "contrib": 0.1875,
+                "p1": "rock2",
+                "p2": "scissors"
+              },
+              {
+                "contrib": 0.3125,
+                "p1": "scissors",
+                "p2": "paper"
+              },
+              {
+                "contrib": -0.25,
+                "p1": "scissors",
+                "p2": "rock1"
+              },
+              {
+                "contrib": -0.25,
+                "p1": "scissors",
+                "p2": "rock2"
+              },
+              {
+                "contrib": -0.0625,
+                "p1": "scissors",
+                "p2": "scissors"
+              }
+            ]
+          },
+          "layer": [
+            {
+              "encoding": {
+                "color": {
+                  "field": "contrib",
+                  "legend": {
+                    "title": "Contribution"
+                  },
+                  "scale": {
+                    "domainMid": 0.0,
+                    "scheme": "redyellowgreen"
+                  },
+                  "type": "quantitative"
+                },
+                "href": {},
+                "opacity": {
+                  "value": 1.0
+                },
+                "order": {
+                  "field": "contrib",
+                  "sort": "descending",
+                  "type": "quantitative"
+                },
+                "strokeWidth": {
+                  "condition": {
+                    "empty": false,
+                    "param": "paramXXX",
+                    "value": 2
+                  },
+                  "value": 0
+                },
+                "tooltip": [
+                  {
+                    "field": "p1",
+                    "type": "nominal"
+                  },
+                  {
+                    "field": "p2",
+                    "type": "nominal"
+                  },
+                  {
+                    "field": "contrib",
+                    "type": "quantitative"
+                  }
+                ],
+                "x": {
+                  "aggregate": "sum",
+                  "axis": {
+                    "grid": false,
+                    "orient": "top"
+                  },
+                  "field": "contrib",
+                  "title": "Contribution by p2 to p1 ratings",
+                  "type": "quantitative"
+                },
+                "y": {
+                  "axis": {
+                    "grid": true,
+                    "labelLimit": 300,
+                    "labels": true,
+                    "orient": "right"
+                  },
+                  "field": "p1",
+                  "scale": {
+                    "domain": {
+                      "param": "paramXXX"
+                    }
+                  },
+                  "sort": ["paper", "rock1", "rock2", "scissors"],
+                  "title": null,
+                  "type": "nominal"
+                }
+              },
+              "mark": {
+                "stroke": "black",
+                "type": "bar"
+              },
+              "name": "viewXXX",
+              "transform": [
+                {
+                  "filter": {
+                    "param": "paramXXX"
+                  }
+                },
+                {
+                  "filter": "(datum.contrib < 0)"
+                }
+              ]
+            },
+            {
+              "encoding": {
+                "color": {
+                  "field": "contrib",
+                  "legend": {
+                    "title": "Contribution"
+                  },
+                  "scale": {
+                    "domainMid": 0.0,
+                    "scheme": "redyellowgreen"
+                  },
+                  "type": "quantitative"
+                },
+                "href": {},
+                "opacity": {
+                  "value": 1.0
+                },
+                "order": {
+                  "field": "contrib",
+                  "sort": "ascending",
+                  "type": "quantitative"
+                },
+                "strokeWidth": {
+                  "condition": {
+                    "empty": false,
+                    "param": "paramXXX",
+                    "value": 2
+                  },
+                  "value": 0
+                },
+                "tooltip": [
+                  {
+                    "field": "p1",
+                    "type": "nominal"
+                  },
+                  {
+                    "field": "p2",
+                    "type": "nominal"
+                  },
+                  {
+                    "field": "contrib",
+                    "type": "quantitative"
+                  }
+                ],
+                "x": {
+                  "aggregate": "sum",
+                  "axis": {
+                    "grid": false,
+                    "orient": "top"
+                  },
+                  "field": "contrib",
+                  "title": "Contribution by p2 to p1 ratings",
+                  "type": "quantitative"
+                },
+                "y": {
+                  "axis": {
+                    "grid": true,
+                    "labelLimit": 300,
+                    "labels": true,
+                    "orient": "right"
+                  },
+                  "field": "p1",
+                  "scale": {
+                    "domain": {
+                      "param": "paramXXX"
+                    }
+                  },
+                  "sort": ["paper", "rock1", "rock2", "scissors"],
+                  "title": null,
+                  "type": "nominal"
+                }
+              },
+              "mark": {
+                "stroke": "black",
+                "type": "bar"
+              },
+              "transform": [
+                {
+                  "filter": {
+                    "param": "paramXXX"
+                  }
+                },
+                {
+                  "filter": "(datum.contrib >= 0)"
+                }
+              ]
+            }
+          ],
+          "resolve": {
+            "scale": {
+              "color": "shared"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "x": 0.0001
+              }
+            ]
+          },
+          "encoding": {
+            "x": {
+              "field": "x",
+              "type": "quantitative"
+            }
+          },
+          "mark": {
+            "opacity": 0.5,
+            "size": 1,
+            "strokeDash": [2, 2],
+            "type": "rule"
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "contrib": 0.0625,
+                "p1": "paper",
+                "p2": "paper",
+                "rating": 0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.25,
+                "p1": "paper",
+                "p2": "rock1",
+                "rating": 0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.25,
+                "p1": "paper",
+                "p2": "rock2",
+                "rating": 0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": -0.3125,
+                "p1": "paper",
+                "p2": "scissors",
+                "rating": 0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": -0.1875,
+                "p1": "rock1",
+                "p2": "paper",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock1",
+                "p2": "rock1",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock1",
+                "p2": "rock2",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.1875,
+                "p1": "rock1",
+                "p2": "scissors",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": -0.1875,
+                "p1": "rock2",
+                "p2": "paper",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock2",
+                "p2": "rock1",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.0,
+                "p1": "rock2",
+                "p2": "rock2",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.1875,
+                "p1": "rock2",
+                "p2": "scissors",
+                "rating": 0.0,
+                "support": 0.25
+              },
+              {
+                "contrib": 0.3125,
+                "p1": "scissors",
+                "p2": "paper",
+                "rating": -0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": -0.25,
+                "p1": "scissors",
+                "p2": "rock1",
+                "rating": -0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": -0.25,
+                "p1": "scissors",
+                "p2": "rock2",
+                "rating": -0.25,
+                "support": 0.25
+              },
+              {
+                "contrib": -0.0625,
+                "p1": "scissors",
+                "p2": "scissors",
+                "rating": -0.25,
+                "support": 0.25
+              }
+            ]
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "p1",
+                "type": "nominal"
+              },
+              {
+                "field": "rating",
+                "type": "quantitative"
+              },
+              {
+                "field": "support",
+                "type": "quantitative"
+              }
+            ],
+            "x": {
+              "aggregate": "sum",
+              "axis": {
+                "grid": true,
+                "orient": "top"
+              },
+              "field": "contrib",
+              "title": "p1 ratings",
+              "type": "quantitative"
+            },
+            "y": {
+              "axis": {
+                "grid": true,
+                "labels": true
+              },
+              "field": "p1",
+              "sort": ["paper", "rock1", "rock2", "scissors"],
+              "title": null,
+              "type": "nominal"
+            }
+          },
+          "mark": {
+            "color": "red",
+            "filled": false,
+            "shape": "diamond",
+            "type": "point"
+          },
+          "transform": [
+            {
+              "filter": {
+                "param": "paramXXX"
+              }
+            }
+          ]
+        }
+      ],
+      "resolve": {
+        "scale": {
+          "color": "independent",
+          "x": "shared",
+          "y": "shared"
+        }
+      },
+      "width": 400
+    }
+  ],
+  "params": [
+    {
+      "name": "paramXXX",
+      "select": {
+        "encodings": ["y"],
+        "type": "interval"
+      },
+      "views": ["viewXXX"]
+    },
+    {
+      "name": "paramXXX",
+      "select": {
+        "fields": ["p2"],
+        "on": "mouseover",
+        "type": "point"
+      },
+      "views": ["viewXXX"]
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
+  "usermeta": {
+    "embedOptions": {
+      "loader": {
+        "target": "_blank"
+      }
+    }
+  }
+}
