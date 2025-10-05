@@ -27,8 +27,6 @@ To release a new version (e.g. from `1.0.0` -> `2.0.0`):
 
 * Initial automated release.
 
-## [0.1.0] - 2022-01-01
-
 <!-- mdlint off(LINK_UNUSED_ID) -->
 [Unreleased]: https://github.com/google-deepmind/polarix/compare/v0.1.1...HEAD
 [0.1.1]: https://github.com/google-deepmind/polarix/releases/tag/v0.1.1
