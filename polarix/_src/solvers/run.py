@@ -113,7 +113,7 @@ def solve(
     max_num_iterations: int = 100_000,
     disable_progress_bar: bool = False,
 ) -> R:
-  """Solves a game using the an iterative solver.
+  """Solves a game using an iterative solver.
 
   Args:
     game: The game to solve.

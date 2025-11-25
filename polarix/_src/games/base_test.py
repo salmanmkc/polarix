@@ -33,7 +33,10 @@ class GamesTest(parameterized.TestCase):
       )
 
   def test_payoffs_shape(self):
-    with self.assertRaisesRegex(ValueError, "number of actions"):
+    with self.assertRaisesRegex(
+        ValueError,
+        "Player 0 has 1 actions, but payoff shape implies 2 actions.",
+    ):
       base.Game(
           payoffs=np.reshape(np.arange(12), (2, 2, 3)),
           actions=(np.arange(1), np.arange(3)),
@@ -50,7 +53,8 @@ class GamesTest(parameterized.TestCase):
 
   def test_actions_len(self):
     with self.assertRaisesRegex(
-        ValueError, "The number of actions must match payoff shape."
+        ValueError,
+        "Player 1 has 4 actions, but payoff shape implies 3 actions.",
     ):
       base.Game(
           payoffs=np.ones((2, 2, 3)),

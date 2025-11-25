@@ -43,7 +43,7 @@ def _qre_exploitability_logits(
     logits: list of jnp arrays with each array containing na_i logits
     temperature: float >= 0
     target_logits: list of jnp arrays with each array being a na_i vector of
-      target logits, player utilities will be penalized with kl divergence from
+      target logits, player utilities will be penalized with KL divergence from
       these target_logits.
     marginal_payoffs: function to calculate marginal payoffs given player index,
       logits, and masks.

@@ -32,6 +32,18 @@ from polarix._src.solvers import run
 DEFAULT_OPTIM = optax.chain(optax.clip(1e2), optax.adam(learning_rate=1e-3))
 
 
+def _ce_logit(player: int, dual: jax.Array, payoff: jax.Array) -> jax.Array:
+  """Returns logit for a single player."""
+  num_players = payoff.ndim
+  inds = string.ascii_lowercase[:num_players]
+  pind = inds[player]
+  inds_ = inds[:player] + "A" + inds[player + 1 :]
+  dev_logit = jnp.einsum(f"A{pind},{inds_}->{inds}", dual, payoff)
+  rec_logit = jnp.einsum(f"A{pind},{inds}->{inds}", dual, payoff)
+  logit = rec_logit - dev_logit
+  return logit
+
+
 def _maxent_ce_logit(
     ce_dual_per_player: Sequence[jax.Array],
     *,
@@ -43,18 +55,8 @@ def _maxent_ce_logit(
   ce_dual_per_player = tuple(ce_dual_per_player)
   num_players = len(ce_dual_per_player)
 
-  def _logit(player, dual, payoff):
-    # Calculate logit.
-    inds = string.ascii_lowercase[:num_players]
-    pind = inds[player]
-    inds_ = inds[:player] + "A" + inds[player + 1 :]
-    dev_logit = jnp.einsum(f"A{pind},{inds_}->{inds}", dual, payoff)
-    rec_logit = jnp.einsum(f"A{pind},{inds}->{inds}", dual, payoff)
-    logit = rec_logit - dev_logit
-    return logit
-
   ce_logit_per_player = jax.tree_util.tree_map(
-      _logit, tuple(range(num_players)), ce_dual_per_player, tuple(payoffs)
+      _ce_logit, tuple(range(num_players)), ce_dual_per_player, tuple(payoffs)
   )
   logit = sum(ce_logit_per_player)
 
@@ -71,18 +73,19 @@ def _maxent_ce_logit(
   return logit
 
 
+def _project_ce_dual(ce_dual: jax.Array) -> jax.Array:
+  """Returns projected CE dual."""
+  num_strats = ce_dual.shape[0]
+  ce_dual = jnp.maximum(ce_dual, 0.0)
+  ce_dual = jnp.where(np.eye(num_strats, dtype=bool), 0, ce_dual)
+  return ce_dual
+
+
 def _project_ce_dual_per_player(
     ce_dual_per_player: Sequence[jax.Array],
 ) -> tuple[jax.Array, ...]:
   """Returns CE dual per player."""
-
-  def _calc_ce_dual(ce_dual):
-    num_strats = ce_dual.shape[0]
-    ce_dual = jnp.maximum(ce_dual, 0.0)
-    ce_dual = jnp.where(np.eye(num_strats, dtype=bool), 0, ce_dual)
-    return ce_dual
-
-  return tuple(jax.tree_util.tree_map(_calc_ce_dual, ce_dual_per_player))
+  return tuple(jax.tree_util.tree_map(_project_ce_dual, ce_dual_per_player))
 
 
 def _per_group_to_per_player(

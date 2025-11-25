@@ -52,7 +52,7 @@ def rank(scores: chex.Array) -> chex.Array:
 
 
 def uvzm(scores: chex.Array) -> chex.Array:
-  """Returns unit-variance zero maximum normalized ratings.
+  """Returns unit-variance zero-maximum normalized ratings.
 
   NOTE: unit-variance should result in less extreme normalization than
   peak-to-peak. Because strong models are the most salient in ranking we

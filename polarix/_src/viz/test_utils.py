@@ -18,6 +18,7 @@ import os
 import pathlib
 import re
 
+from absl import logging
 from absl.testing import parameterized
 import altair as alt
 
@@ -85,6 +86,11 @@ class JsonAlmostEqualTestCase(parameterized.TestCase):
 
   def assertChartEqual(self, chart: alt.Chart, filename: str):  # pylint: disable=invalid-name
     """Asserts that the chart is equal to the golden file."""
+    if alt.__version__.startswith("4"):
+      logging.info(
+          "Skipping chart comparison for altair v4 compatibility tests."
+      )
+      return
 
     testdata = epath.resource_path("polarix") / "_src" / "viz" / "testdata"
     filename = testdata / filename

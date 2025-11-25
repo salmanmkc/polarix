@@ -134,8 +134,8 @@ class Game:
     for p, action in enumerate(self.actions):
       if len(action) != self.payoffs.shape[1 + p]:
         raise ValueError(
-            f"The number of actions must match payoff shape but player {p} has "
-            f"{len(action)} but payoff shape is != {self.payoffs.shape}."
+            f"Player {p} has {len(action)} actions, but payoff shape implies "
+            f"{self.payoffs.shape[1 + p]} actions."
         )
     if not jnp.all(jnp.isfinite(self.payoffs)):
       not_finite = jnp.logical_not(

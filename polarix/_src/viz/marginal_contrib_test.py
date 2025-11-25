@@ -29,6 +29,9 @@ EXPECTED_RRPS_HREF = "rating_contribution_href.json"
 
 # METADATA associated with each contributor action.
 METADATA = pd.DataFrame.from_dict({
+    "p1": pd.Series(
+        ["rock1", "rock2", "paper", "scissors"], index=np.arange(4)
+    ),
     "p2": pd.Series(
         ["rock1", "rock2", "paper", "scissors"], index=np.arange(4)
     ),
@@ -37,6 +40,15 @@ METADATA = pd.DataFrame.from_dict({
     ),
     "rating_color": pd.Series(
         ["orange", "orange", "purple", "green"], index=np.arange(4)
+    ),
+})
+
+BAD_METADATA = pd.DataFrame.from_dict({
+    "p1": pd.Series(
+        ["rock1", "rock2", "paper"], index=np.arange(3)
+    ),
+    "p2": pd.Series(
+        ["rock1", "rock2", "paper"], index=np.arange(3)
     ),
 })
 
@@ -132,11 +144,48 @@ class MarginalContributionTest(test_utils.JsonAlmostEqualTestCase):
     )
     self.assertChartEqual(chart, EXPECTED_RRPS_BOTTOM_K)
 
+  def test_missing_rating_metadata_raises_warning(self):
+    rrps_game = test_utils_games.make_rrps()
+    na = len(rrps_game.actions[0])
+    marginals = [np.ones(na, np.float32) / na, np.ones(na, np.float32) / na]
+    joint = base.joint_from_marginals(marginals)
+
+    with self.subTest("missing_rating_metadata"):
+      with self.assertLogs(level="WARNING") as cm:
+        marginal_contrib.rating_contribution(
+            rrps_game,
+            joint,
+            rating_player=0,
+            contrib_player=1,
+            rating_metadata=BAD_METADATA,
+            contrib_metadata=METADATA,
+        )
+        self.assertRegex(cm.output[0], "should contain game.actions")
+
+  def test_missing_contrib_metadata_raises_error(self):
+    rrps_game = test_utils_games.make_rrps()
+    na = len(rrps_game.actions[0])
+    marginals = [np.ones(na, np.float32) / na, np.ones(na, np.float32) / na]
+    joint = base.joint_from_marginals(marginals)
+
+    with self.subTest("missing_contrib_metadata"):
+      with self.assertRaisesRegex(ValueError, "must contain game.actions"):
+        marginal_contrib.rating_contribution(
+            rrps_game,
+            joint,
+            rating_player=0,
+            contrib_player=1,
+            rating_metadata=METADATA,
+            contrib_metadata=BAD_METADATA,
+        )
+
   def test_contrib_categories(self):
     rrps_game = test_utils_games.make_rrps()
     na = len(rrps_game.actions[0])
     marginals = [np.ones(na, np.float32) / na, np.ones(na, np.float32) / na]
     joint = base.joint_from_marginals(marginals)
+
+    drop_columns = ["p1", "rating_color"]
 
     with self.subTest("missing_category"):
       with self.assertRaisesRegex(ValueError, "must contain column"):
@@ -145,7 +194,7 @@ class MarginalContributionTest(test_utils.JsonAlmostEqualTestCase):
             joint,
             rating_player=0,
             contrib_player=1,
-            contrib_metadata=METADATA.drop("rating_color", axis=1),
+            contrib_metadata=METADATA.drop(drop_columns, axis=1),
             contrib_categories=("missing_category",),
         )
 
@@ -154,7 +203,7 @@ class MarginalContributionTest(test_utils.JsonAlmostEqualTestCase):
         joint,
         rating_player=0,
         contrib_player=1,
-        contrib_metadata=METADATA.drop("rating_color", axis=1),
+        contrib_metadata=METADATA.drop(drop_columns, axis=1),
         contrib_categories=("action_type",),
     )
     self.assertChartEqual(chart, EXPECTED_RRPS_CATEGORISED)
@@ -186,7 +235,7 @@ class MarginalContributionTest(test_utils.JsonAlmostEqualTestCase):
         joint,
         rating_player=1,
         contrib_player=0,
-        rating_metadata=METADATA,
+        rating_metadata=METADATA.drop(columns=["p1"]),
         rating_href="action_type",
         rating_color="rating_color",
         rating_styles={"stroke": "black", "filled": True, "size": 80},

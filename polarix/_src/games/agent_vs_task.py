@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Tabulate data into payoff tensor of different games."""
+"""Tabulates data into payoff tensor of different games."""
 
 import chex
 import jax.numpy as jnp
@@ -29,7 +29,7 @@ def agent_vs_task_game(
     agent_vs_task_stddev: chex.Array | None = None,
     agent_player: str = "agent",
     task_player: str = "task",
-    normalizer: str | None = "ptp",
+    normalizer: str = "ptp",
 ) -> base.Game:
   """Returns an evaluation game with item-level data.
 
@@ -41,9 +41,9 @@ def agent_vs_task_game(
       each task. If not provided, it is assumed to be 0.
     agent_player: The agent player name.
     task_player: The task player name.
-    normalizer: Normalization strategy, one of "ptp", "uvzm", "rank", or
-      "winrate". If not provided, the score matrix is normalized by peak-to-peak
-      across agents for each task.
+    normalizer: Normalization strategy, one of "ptp", "uvzm", "rank", "winrate",
+      or "none". If "none", no normalization is applied. If not provided, the
+      score matrix is normalized by peak-to-peak across agents for each task.
 
   Returns:
     A Game instance.
@@ -58,12 +58,6 @@ def agent_vs_task_game(
 
   if jnp.any(agent_vs_task_stddev < 0):
     raise ValueError("Agent vs task stddev must be non-negative.")
-
-  # Remove tasks that have zero ptp across all agents.
-  if (jnp.ptp(agent_vs_task, axis=0) == 0).any():
-    raise ValueError(
-        "The agent-vs-task score matrix ptp must be greater than zero."
-    )
 
   if normalizer == "winrate":
     return sxs.winrate_game(

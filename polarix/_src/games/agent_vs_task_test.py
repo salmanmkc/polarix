@@ -18,6 +18,8 @@ import numpy as np
 from polarix._src.games import agent_vs_task
 
 
+AGENT_VS_TASK_ZERO = np.zeros((3, 4), dtype=np.float32)
+
 AGENT_VS_TASK_MEAN = np.asarray([
     [0.1, 0.7, 0.1, 0.9],
     [0.6, 0.7, 0.2, 0.5],
@@ -113,6 +115,29 @@ class GamesTest(parameterized.TestCase):
 
     np.testing.assert_allclose(
         game.payoffs, EXPECTED_WINRATE_PAYOFFS, atol=1e-2
+    )
+
+  @parameterized.parameters(
+      ("none", 0.0),
+      ("ptp", 0.0),
+      ("uvzm", 0.0),
+      ("rank", 0.0),
+  )
+  def test_zero_game(self, normalizer, expected_value):
+    """Tests that a zero agent vs task matrix."""
+    na, nt = AGENT_VS_TASK_ZERO.shape
+    agents = np.arange(na)
+    tasks = np.arange(nt)
+
+    game = agent_vs_task.agent_vs_task_game(
+        agents=agents,
+        tasks=tasks,
+        agent_vs_task=AGENT_VS_TASK_ZERO,
+        normalizer=normalizer,
+    )
+
+    np.testing.assert_allclose(
+        game.payoffs, expected_value, atol=1e-6
     )
 
 

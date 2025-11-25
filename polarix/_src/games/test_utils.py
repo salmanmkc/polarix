@@ -59,6 +59,17 @@ def make_rrps() -> base.Game:
 
 
 def make_chicken(duplicate: bool = True) -> base.Game:
+  """Returns a version of the game of Chicken.
+
+  The game has two players and three actions: Swerve, Straight, and a duplicate
+  Straight. The payoffs are symmetric.
+
+  The max-entropy NE is to go straight 1/12 of the time and swerve the rest.
+
+  Args:
+    duplicate: If True, includes a duplicate "Straight" action. Otherwise, only
+      two actions ("Swerve", "Straight") are used.
+  """
   payoffs = np.asarray([
       [0.0, -1.0, -1.0],
       [1.0, -12.0, -12.0],
@@ -99,7 +110,7 @@ def make_el_farol(n=2, c=0.5, b=0, s=1, g=2) -> base.Game:
     p = idx[0]
     a = idx[1:]
     a_i = a[p]
-    go_to_bar = (a_i < 1)
+    go_to_bar = a_i < 1
     crowded = (n - 1 - sum(a) + a_i) >= (c * n)
     if go_to_bar and not crowded:
       payoffs[idx] = g

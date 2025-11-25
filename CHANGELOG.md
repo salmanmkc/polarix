@@ -2,11 +2,11 @@
 
 <!--
 
-Changelog follow the https://keepachangelog.com/ standard (at least the headers)
+Changelog follows the https://keepachangelog.com/ standard (at least the headers)
 
-This allow to:
+This allows us to:
 
-* auto-parsing release notes during the automated releases from github-action:
+* Auto-parse release notes during the automated releases from github-action:
   https://github.com/marketplace/actions/pypi-github-auto-release
 * Have clickable headers in the rendered markdown
 

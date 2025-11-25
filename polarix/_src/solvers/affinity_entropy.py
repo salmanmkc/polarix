@@ -66,7 +66,7 @@ def affinity_entropy(
     kernel: nai x nai jnp.array, the affinity kernel to use.
     mask: jnp.array, the action mask.
     p: float, the Tsallis entropy parameter (p in [0, 1]). p=0 corresponds to
-      Shannon entropy (limit of Tsallis entropy as p -> 0). this definition is
+      Shannon entropy (limit of Tsallis entropy as p -> 0). This definition is
       concave in probabilities.
 
   Returns:
@@ -125,7 +125,7 @@ def _make_update_fn(
     p: float = 0.0,
     entropy_cost: float = 0.0,
 ) -> UpdateFn:
-  """Returns an update function for LLE solving.
+  """Returns an update function for affinity-entropy solving.
 
   Args:
     opt: the optimiser used.
@@ -283,7 +283,7 @@ def affinity_kernel(
     sample_size: int = 512,
     kernel_variance: float = 1e-6,
 ) -> KernelFn:
-  """Returns a function that estimates each players kernel from samples."""
+  """Returns a function that estimates each player's kernel from samples."""
 
   @jax.jit
   def kernel_fn(payoffs: chex.Array) -> list[chex.Array]:
@@ -303,7 +303,7 @@ def affinity_kernel(
 
 
 def identity_kernel() -> KernelFn:
-  """Returns a function that estimates each players kernel from samples."""
+  """Returns a function that returns identity kernels for each player."""
 
   @jax.jit
   def kernel_fn(payoffs: chex.Array) -> list[chex.Array]:

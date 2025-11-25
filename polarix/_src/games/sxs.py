@@ -122,10 +122,9 @@ def winrate_game(
       the `loc`/`scale` tensor and ends with the player name of the player being
       compared pairwise.
     utilities: a sequence of utility functions for all players except the
-      trailing player whose utility is the score difference following pairwise
-      comparisons. Each utility function takes a (..., |A|, |A|) winrate tensor
-      and returns a (..., |A|, |A|) tensor indicating the utility to player for
-      each joint action.
+      trailing player. Each utility function takes a (..., |A|, |A|) winrate
+      tensor and returns a (..., |A|, |A|) tensor indicating the utility to that
+      player for each joint action.
     min_stddev: minimum standard deviation to use for computing winrate.
 
   Returns:

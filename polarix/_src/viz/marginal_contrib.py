@@ -16,6 +16,7 @@
 
 from typing import Any, Mapping, Sequence
 
+from absl import logging
 import altair as alt
 import chex
 import frozendict
@@ -32,6 +33,9 @@ _CATEGORY_PANEL_WIDTH = 400
 
 MAX_NUM_ROWS = 5_000
 LONG_TAIL = "[LONG-TAIL CONTRIBUTORS]"
+
+
+_COMPAT_V4 = alt.__version__.startswith("4")
 
 
 def _rating_contribution_dataframe(
@@ -53,6 +57,9 @@ def _rating_contribution_dataframe(
     A dataframe of the rating contribution of a player to another player's
     ratings.
   """
+  if _COMPAT_V4:
+    logging.info("Enabled altair v4 compatibility mode.")
+
   contrib_to_ratings = base.joint_payoffs_contribution(
       payoffs=game.payoffs,
       joint=joint,
@@ -141,7 +148,8 @@ def rating_contribution(
     top_k: The number of top rating actions to show.
     bottom_k: The number of bottom rating actions to show.
     use_categorical_contrib: When True, the contrib is labelled categorically in
-      a legend. When False, the contrib is colored quanitively with a colorbar.
+      a legend. When False, the contrib is colored quantitatively with a
+      colorbar.
     include_rating_plot: When True, a rating plot is included.
     rating_chart_width: The width of the rating chart.
     category_panel_width: The width of each category panel.
@@ -222,6 +230,23 @@ def rating_contribution(
       raise ValueError(
           "Rating metadata must be unique per rating action, but is not"
           f" ({nunique_by_rating_name.reset_index()})."
+      )
+
+    rating_actions_set = set(game.actions[rating_player].tolist())
+    missing_actions = rating_actions_set - set(rating_metadata[rating_name])
+    if missing_actions:
+      logging.warning(
+          "rating_metadata should contain game.actions[rating_player]. Missing"
+          " actions: %s", missing_actions
+      )
+
+  if contrib_metadata is not None:
+    contrib_actions_set = set(game.actions[contrib_player].tolist())
+    missing_actions = contrib_actions_set - set(contrib_metadata[contrib_name])
+    if missing_actions:
+      raise ValueError(
+          "contrib_metadata must contain game.actions[contrib_player]. Missing"
+          f" actions: {missing_actions}"
       )
 
   if contrib_tooltip is not None:
@@ -359,12 +384,16 @@ def rating_contribution(
     if top_bottom_text is not None:
       top_bottom_text = top_bottom_text.transform_filter(interval)
 
-    charts.append(
+    sidebar = (
         alt.layer(*sidebar)
         .resolve_scale(x="independent", y="shared")
-        .add_params(interval)
         .properties(width=rating_chart_width, height=height)
     )
+    if _COMPAT_V4:
+      sidebar = sidebar.add_selection(interval)
+    else:
+      sidebar = sidebar.add_params(interval)
+    charts.append(sidebar)
 
   category_selectors = []
   categories = tuple(contrib_categories) + (contrib_name,)
@@ -401,7 +430,11 @@ def rating_contribution(
       )
       y_labels = False
       grouping = [rating_name, *categories[: i + 1]]
-      selector = alt.selection_point(encodings=["color"])
+
+      if _COMPAT_V4:
+        selector = alt.selection_multi(encodings=["color"])
+      else:
+        selector = alt.selection_point(encodings=["color"])
 
       # Highlight bars with matching contribution category.
       hoverlight_fields = list(grouping)
@@ -424,9 +457,14 @@ def rating_contribution(
       # Highlight bars with matching contribution action.
       hoverlight_fields = [contrib_name]
 
-    highlight = alt.selection_point(
-        fields=hoverlight_fields, on="mouseover", empty=False
-    )
+    if _COMPAT_V4:
+      highlight = alt.selection_multi(
+          fields=hoverlight_fields, on="mouseover", empty="none"
+      )
+    else:
+      highlight = alt.selection_point(
+          fields=hoverlight_fields, on="mouseover", empty=False
+      )
 
     # Adjust bars strokeWidth with actively hovered-over contribution category.
     stroke_width = alt.condition(highlight, alt.value(2), alt.value(0))
@@ -497,7 +535,7 @@ def rating_contribution(
             if selector is not None
             else alt.value(1.0)
         ),
-        # Stroke width is not stictly incl. in the width of the bars; when
+        # Stroke width is not strictly incl. in the width of the bars; when
         # stacking bars, stroke will overlap with neighbouring bars.
         strokeWidth=stroke_width,
         tooltip=alt.Tooltip(tooltip),
@@ -525,9 +563,15 @@ def rating_contribution(
         .encode(x="x:Q")
     )
     if selector is not None:
-      bars = bars.add_params(selector)
+      if _COMPAT_V4:
+        bars = bars.add_selection(selector)
+      else:
+        bars = bars.add_params(selector)
 
-    bars = bars.add_params(highlight)
+    if _COMPAT_V4:
+      bars = bars.add_selection(highlight)
+    else:
+      bars = bars.add_params(highlight)
 
     # For each contribution category panel, we overlay the rating points which
     # sums over all contributors, filtered by prior category selections. At the
