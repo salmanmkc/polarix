@@ -12,7 +12,7 @@
 computing **interpretable** ratings at **game-theoretic equilibria**.
 
 The game-theoretic approach dynamically adjusts the relevance of each action
-(e.g. an evaluation task, a candidate model, an agent) based on how they
+(e.g., an evaluation task, a candidate model, an agent) based on how they
 interact with each other. The rating equilibrium that is selected continually
 adapts to the capability frontiers of each player based on an overarching
 evaluation objective that you define.
@@ -101,6 +101,17 @@ shows the probability that each agent is played at the equilibrium. Note that
 specialist agents all received significant probability mass at the equilibrium,
 showing that the top-ranked agent does not dominate competing agents on all
 tasks.
+
+## Use Cases
+
+**Kaggle** deployed `polarix` to rate leading AI agents in the game Werewolf!
+[Blog Post.](https://www.kaggle.com/blog/game-arena-werewolf)
+
+> The game-theoretic ratings report candidate models' relative win-probabilities
+against competing models over a mix of roles, balanced by per-role model
+strengths and role discriminative power respectively. Results are computed over
+31,472 matchups with models assigned to roles randomly (with replacement) to
+capture the co-player variation unique to many player games.
 
 ## References
 
